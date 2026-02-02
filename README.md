@@ -1,5 +1,8 @@
 # Previsão de Churn em Telecomunicações 📉
 
+Este projeto tem caráter educacional e demonstrativo.
+
+
 ## 📌 Problema de Negócio
 A perda de clientes (Churn) é um dos maiores drenos de receita em empresas de telecom. O objetivo deste projeto é desenvolver um modelo de Machine Learning capaz de identificar clientes com alta probabilidade de cancelamento, permitindo que a empresa aja preventivamente.
 
