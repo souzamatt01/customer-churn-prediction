@@ -9,25 +9,29 @@ from sklearn.impute import SimpleImputer
 
 #Iniciando o pre processamento:
 
-#Separando colunas numéricas e categóricas  
-num_features = X.select_dtypes(include=["int64", "float64"]).columns
-cat_features = X.select_dtypes(include=["object"]).columns
 
-#Aplicando o Transformer para colunas numéricas
-numeric_transformer = Pipeline(steps=[
-    ('scaler',StandardScaler())
-])
+def make_preprocessor(X_data):
+    #Separarando colunas
+    num_features = X_data.select_dtypes(include=["int64", "float64"]).columns
+    cat_features = X_data.select_dtypes(include=["object"]).columns
 
-#Aplicando o Transformer para colunas categóricas
-categorical_transformer = Pipeline(steps=[
-   ('onehot', OneHotEncoder(handle_unknown='ignore'))
-])
-
-#Aplicando o ColumnTransformer para unir os dois transformers
-preprocessor = ColumnTransformer(
-    transformers=[
-        ('num', numeric_transformer, num_features),
-        ('cat', categorical_transformer, cat_features)
+    #Criando os Pipelines de Transformação
+    numeric_transformer = Pipeline(steps=[
+        ('imputer', SimpleImputer(strategy='median')),
+        ('scaler', StandardScaler())
     ])
 
-#Ajustando o preprocessor aos dados
+    categorical_transformer = Pipeline(steps=[
+        ('imputer', SimpleImputer(strategy='most_frequent')),
+        ('onehot', OneHotEncoder(handle_unknown='ignore'))
+    ])
+
+    # 3Juntando tudo no ColumnTransformer
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ('num', numeric_transformer, num_features),
+            ('cat', categorical_transformer, cat_features)
+        ]
+    )
+
+    return preprocessor
